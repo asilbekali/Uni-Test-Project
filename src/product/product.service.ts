@@ -6,20 +6,13 @@ import { PrismaService } from './../prisma/prisma.service';
 @Injectable()
 export class ProductService {
   constructor(private readonly prisma: PrismaService) {}
+
   async create(data: CreateProductDto) {
     try {
-      const bazaPro = await this.prisma.product.findFirst({
-        where: { name: data.name },
-      });
-
-      if (bazaPro) {
-        throw new BadRequestException('Product already exists');
-      } else {
-        return await this.prisma.product.create({ data });
-      }
+      return await this.prisma.product.create({ data });
     } catch (error) {
       console.log(error);
-      return error;
+      throw error;
     }
   }
 
